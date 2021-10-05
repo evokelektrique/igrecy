@@ -1,0 +1,204 @@
+*, body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Peyda' !important;
+  font-weight: 400;
+  direction: rtl;
+  color: #212B36;
+}
+
+/* Containers */
+
+.container {
+  max-width: 1366px;
+  padding: 0px 76px;
+  margin: 0 auto;
+}
+
+@media screen and (min-width: 1520px) {
+  .container {
+    max-width: 1440px;
+  }
+}
+@media screen and (max-width: 1024px) {
+  .container {
+    padding: 0px 36px;
+  }
+}
+@media screen and (max-width: 576px) {
+  .container {
+    padding: 0px 12px !important;
+  }
+}
+
+/* Font Sizes */
+
+p, li, span, button, input, textarea, select {
+  font-size: 16px;
+}
+.label {
+  font-size: 12px;
+}
+.p-small {
+  font-size: 14px;
+}
+h1 {
+  font-size: 48px;
+}
+h2 {
+  font-size: 32px;
+}
+h5 {
+  font-size: 18px;
+}
+h6 {
+  font-size: 16px;
+}
+
+@media screen and (max-width: 768px) {
+  h1 {
+    font-size: 36px;
+  }
+  h2 {
+    font-size: 26px;
+  }
+  h5 {
+    font-size: 16px;
+  }
+  h6 {
+    font-size: 14px;
+  }
+  p, li, span, button, input, textarea, select {
+    font-size: 14px;
+  }
+  .label {
+    font-size: 10px;
+  }
+  .p-small {
+    font-size: 12px;
+  }
+}
+
+/* Width */
+.w-100 {
+  width: 100%;
+}
+
+/* Inputs and other elements */
+input, textarea {
+  outline: none;
+  border: none;
+  background: transparent;
+}
+img {
+  object-fit: cover;
+  user-drag: none !important;
+	user-select: none !important;
+	-moz-user-select: none !important;
+	-webkit-user-drag: none !important;
+	-webkit-user-select: none !important;
+	-ms-user-select: none !important;
+}
+li {
+  list-style: none;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+/* Buttons */
+.btn {
+  outline: none;
+  background: transparent;
+  outline: none;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+}
+.btn-small {
+  padding: 8px 16px;
+}
+.btn-normal {
+  padding: 8px 24px;
+}
+.btn-large {
+  padding: 13px 32px;
+}
+.pagination-btn {
+  padding: 10px 12px;
+}
+.btn-primary {
+  background-color: #1890FF;
+  color: white;
+} 
+.btn-secondary {
+  border: 1px solid #1890FF;
+  color: #1890FF;
+}
+
+/* Colors */
+.primary-bg {
+  background-color: #1890FF;
+  color: white;
+}
+.primary-blue-text {
+  color: #1890FF;
+}
+.bordered {
+  border: 1px solid #DFE3E8;
+}
+.blue-bg {
+  background-color: #D0F2FF;
+}
+.yello-bg {
+  background-color: #FFF7CD;
+}
+.input-bg {
+  background-color: #F9FAFB;
+}
+.red-bg {
+  background-color: #FF4842;
+}
+.red-text {
+  color: #FF4842;
+}
+.deactivated-text {
+  color: #919EAB;
+}
+.primary-dark-text {
+  color: #212B36;
+}
+.secondary-text-color {
+  color: #454F5B;
+}
+.text-3 {
+  color: #637381;
+}
+.text-4 {
+  color: #C4CDD5;
+}
+
+/*Box Shadows*/
+
+.shadow-normal {
+  box-shadow: 0px 8px 40px rgba(141, 163, 185, 0.2);
+}
+.shadow-hover, .card-shadow-hover, .btn-shadow-hover {
+  transition: .3s ease;
+}
+.shadow-hover:hover {
+  box-shadow: 0px 8px 40px rgba(141, 163, 185, 0.2);
+}
+.card-shadow-normal {
+  box-shadow: 0px 8px 24px rgba(141, 163, 185, 0.2);
+}
+.card-shadow-hover:hover {
+  box-shadow: 0px 8px 24px rgba(141, 163, 185, 0.2);
+}
+.btn-shadow-normal {
+  box-shadow: 0px 8px 16px rgba(24, 144, 255, 0.32);
+}
+.btn-shadow-hover:hover {
+  box-shadow: 0px 8px 16px rgba(24, 144, 255, 0.32);
+}

@@ -1,0 +1,114 @@
+.blog-list-container {
+  margin-bottom: 120px;
+}
+.blog-posts-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin: 20px auto;
+}
+.blog-posts-container .blog-cart-box {
+  margin: 20px 0px;
+}
+.blog-header {
+  margin: 56px 0px;
+}
+.blog-header h2 {
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+.breadcrumb img {
+  margin: 0px 8px;
+}
+.blog-filter-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.blog-search-input {
+  background: #F9FAFB;
+  border: 1px solid #DFE3E8;
+  box-sizing: border-box;
+  border-radius: 12px;
+  padding: 8px 12px;
+  min-width: 275px;
+}
+.blog-search-input form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.blog-search-input input {
+  width: 85%;
+}
+.blog-filter-container select {
+  outline: none;
+  min-width: 274px;
+  padding: 12px;
+  background: #FFFFFF;
+  border: 1px solid #DFE3E8;
+  box-sizing: border-box;
+  border-radius: 12px;
+  color: #637381;
+  -moz-appearance:none; /* Firefox */
+  -webkit-appearance:none; /* Safari and Chrome */
+  appearance:none;
+  position: relative;
+}
+.blog-category-filter {
+  position: relative;
+}
+.blog-category-filter::after {
+  content: "";
+  width: 14px;
+  height: 14px;
+  background-image: url("../src/images/arrow-down-gray.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  top: 20px;
+  left: 12px;
+  position: absolute;
+  display: inline-block;
+}
+@media screen and (max-width: 576px) {
+  .blog-filter-container {
+    flex-direction: column;
+  }
+  .blog-search-input {
+    width: 100%;
+    margin: 20px 0px;
+  }
+  .blog-category-filter, .blog-filter-container select {
+    width: 100%;
+  }
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pagination a {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #FFFFFF;
+  border: 1px solid #DFE3E8;
+  box-sizing: border-box;
+  border-radius: 12px;
+  margin: 0px 8px;
+  transition: 0.3s ease-in;
+}
+.pagination p {
+  margin: 0px 8px;
+}
+.pagination .prev-arrow img {
+  transform: rotate(180deg);
+}
+.pagination-active {
+  background: #1890FF !important;
+  box-shadow: 0px 8px 16px rgba(24, 144, 255, 0.32);
+  color: white;
+}

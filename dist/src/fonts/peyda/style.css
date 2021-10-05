@@ -1,0 +1,80 @@
+@font-face {
+  font-family: 'Peyda';
+  src: url('PeydaWeb-Thin.eot');
+  src: url('PeydaWeb-Thin.woff2') format('woff2'),
+      url('PeydaWeb-Thin.woff') format('woff');
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Peyda';
+  src: url('peydaWeb-extralight.eot');
+  src: url('peydaWeb-extralight.woff2') format('woff2'),
+      url('peydaWeb-extralight.woff') format('woff');
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Peyda';
+  src: url('peydaWeb-light.eot');
+  src: url('peydaWeb-light.woff2') format('woff2'),
+      url('peydaWeb-light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Peyda';
+  src: url('PeydaWeb-Regular.eot');
+  src: url('PeydaWeb-Regular.woff2') format('woff2'),
+      url('PeydaWeb-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Peyda';
+  src: url('PeydaWeb-Medium.eot');
+  src: url('PeydaWeb-Medium.woff2') format('woff2'),
+      url('PeydaWeb-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Peyda';
+  src: url('PeydaWeb-SemiBold.eot');
+  src: url('PeydaWeb-SemiBold.woff2') format('woff2'),
+      url('PeydaWeb-SemiBold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Peyda';
+  src: url('PeydaWeb-Bold.eot');
+  src: url('PeydaWeb-Bold.woff2') format('woff2'),
+      url('PeydaWeb-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Peyda';
+  src: url('PeydaWeb-ExtraBold.eot');
+  src: url('PeydaWeb-ExtraBold.woff2') format('woff2'),
+      url('PeydaWeb-ExtraBold.woff') format('woff');
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Peyda';
+  src: url('PeydaWeb-Black.eot');
+  src: url('PeydaWeb-Black.woff2') format('woff2'),
+      url('PeydaWeb-Black.woff') format('woff');
+  font-weight: 900;
+  font-style: normal;
+}
