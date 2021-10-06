@@ -3,33 +3,10 @@
  * Template Name: Login
  */
 
+$redirect_to = "http://localhost/wordpress_projects/igrecy/wp-admin/";
+
 get_header();
 ?>
-
-<?php
-if ( ! is_user_logged_in() ) {
-   $args = array(
-      'redirect' => admin_url(),
-      'form_id' => 'loginform-custom',
-      'label_username' => __( 'Username custom text' ),
-      'label_password' => __( 'Password custom text' ),
-      'label_remember' => __( 'Remember Me custom text' ),
-      'label_log_in' => __( 'Log In custom text' ),
-      'remember' => true
-   );
-   wp_login_form( $args );
-} else {
-   wp_loginout( home_url() );
-   echo " | ";
-   wp_register('', '');
-}
-
-?>
-
-
-
-
-
 
 <div class="auth-container">
   <div class="auth-form">
@@ -41,19 +18,23 @@ if ( ! is_user_logged_in() ) {
         کلیک کنید.
       </p>
     </div>
-    <form>
-      <div class="form-field">
-        <div class="form-input">
-          <input class="email-input" type="email" name="email" id="email" placeholder=" " />
-          <label class="email-label" id="email-label" for="email">ایمیل شما</label>
 
+   <form action="http://localhost/wordpress_projects/igrecy/wp-login.php" method="post">
+      <div class="form-field">
+         <!-- Username / Email -->
+        <div class="form-input">
+          <input class="email-input" type="text" name="log" id="email" placeholder=" " />
+          <label class="email-label" id="email-label" for="email">ایمیل شما</label>
         </div>
       </div>
       <div class="form-field">
+         <!-- Password -->
         <div class="form-input">
-          <input class="password-input" type="password" name="password" id="password" placeholder=" " />
+          <input class="password-input" type="password" name="pwd" id="password" placeholder=" " />
           <label class="password-label" id="password-label" for="password">کلمه عبور</label>
         </div>
+
+        <!-- Forgot password -->
         <div class="forgot-password">
           <a href="#" class="p-small text-3">فراموشی کلمه عبور</a>
         </div>
@@ -63,8 +44,9 @@ if ( ! is_user_logged_in() ) {
         <p class="text-3">ورود با اکانت گوگل</p>
         <img src="<?= get_template_directory_uri() . "/dist" ?>/src/images/google-oauth.svg" alt="">
       </button>
+      <input type="hidden" name="redirect_to" value="<?= $redirect_to ?>">
     </form>
-  </div>
+   </div>
   <div class="sidebar-auth">
     <div class="swiper-container">
       <div class="swiper-wrapper">
@@ -81,21 +63,6 @@ if ( ! is_user_logged_in() ) {
     <div class="swiper-pagination auth-pagination"></div>
   </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <script type="module">
   import Swiper from 'https://unpkg.com/swiper/swiper-bundle.esm.browser.min.js'
