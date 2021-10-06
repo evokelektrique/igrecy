@@ -154,3 +154,61 @@
     z-index: 9999;
   }
 }
+
+
+
+/*Custom*/
+.nav-list .menu-item-has-children {
+   position: relative;
+   margin-left: 27px;
+}
+.nav-list .menu-item-has-children:before {
+   content: "";
+   display: inline-block;
+   width: 10px;
+   height: 6px;
+   position: absolute;
+   left: -15px;
+   top: 8px;
+   background: url(../../src/images/arrow-down-blue.svg);
+   background-size: contain;
+   background-repeat: no-repeat;
+   background-position: center;
+}
+
+
+.nav-list .menu-item-has-children ul {
+   position: absolute;
+   background: white;
+   padding: 5px 20px;
+   opacity: 0;
+   transform: translateY(-20px);
+   pointer-events: none;
+   user-select: none;
+   transition: .2s ease-in;
+   border-radius: 10px;
+   box-shadow: 0px 8px 40px rgba(141, 163, 185, 0.20);
+   border: 1px solid #DFE3E8;
+}
+
+.nav-list > li {
+   margin-left: 24px;
+   transition: .2s ease-in;
+}
+
+.nav-list ul li a {
+   display: block;
+   white-space: nowrap;
+   padding: 7px 0px;
+   transition: .2s ease-in;
+}
+.nav-list li a:hover {
+   color: #1890FF;
+}
+
+.nav-list .menu-item-has-children:hover > ul {
+   opacity: 1;
+   pointer-events: visible;
+   user-select: auto;
+   transform: translateY(0px);
+}
