@@ -18,9 +18,19 @@
   font-weight: 700;
   margin-bottom: 16px;
 }
-.breadcrumb img {
+.breadcrumb .breadcrumb-arrow {
   margin: 0px 8px;
+  width: 14px;
+  height: 14px;
+  background-image: url("../src/images/breadcrumb-arrow.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: relative;
+  display: inline-block;
+  top: 3px
 }
+
+
 .blog-filter-container {
   display: flex;
   justify-content: space-between;

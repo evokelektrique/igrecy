@@ -24,3 +24,12 @@ function modify_user_table_row( $val, $column_name, $user_id ) {
 add_filter( 'manage_users_custom_column', 'modify_user_table_row', 10, 3 );
 
 
+/////////////////////
+// Remove adminbar //
+/////////////////////
+function remove_admin_bar() {
+   // if (!current_user_can('administrator') && !is_admin()) {
+      show_admin_bar(false);
+   // }
+}
+add_action('after_setup_theme', 'remove_admin_bar');
