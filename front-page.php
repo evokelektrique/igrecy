@@ -1,5 +1,5 @@
 <?php get_header(); ?>
-
+Home
 <!--
 <div class="main-header-container">
    <div class="wrapper container">
@@ -898,4 +898,4 @@
    </div>
 </div>
  -->
-<?php //get_footer(); ?>
+<?php get_footer(); ?>

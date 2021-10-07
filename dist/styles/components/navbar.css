@@ -103,6 +103,56 @@
     width: 100%;
     margin: 30px 0px;
   }
+
+
+  /* EVOKE Edits */
+   .nav-list-mobile li {
+      position: relative;
+   }
+  .nav-list-mobile li a {
+      width: 100%;
+      margin-bottom: 30px;
+      display: block;
+      position: relative;
+  }
+
+  .nav-list-mobile li a:hover {
+      color: #1890FF;
+  }
+
+  .nav-list-mobile li.menu-item-has-children:before {
+      content: "";
+      background: url('../../src/images/arrow-down-blue.svg');
+      background-position: center;
+      background-size: contain;
+      position: absolute;
+      left: 0;
+      top: 5px;
+      width: 10px;
+      height: 6px;
+  }
+
+  .nav-list-mobile .sub-menu {
+      width: 100%;
+      margin-bottom: 30px;
+      height: 0px;
+      overflow: hidden;
+      opacity: 1;
+      transform: translateY(0px);
+      pointer-events: none;
+      user-select: none;
+      transition: .2s ease-in;
+      border-radius: 10px;
+      padding: 5px 20px;
+  }
+
+  .nav-list-mobile li:hover > .sub-menu {
+      pointer-events: visible;
+      user-select: auto;
+      height: auto;
+  }
+
+
   .dropdown-nav-list .list-item-header {
     justify-content: space-between;
   }
