@@ -98,7 +98,8 @@
   justify-content: center;
   align-items: center;
 }
-.pagination a {
+.pagination a,
+.pagination span {
   width: 48px;
   height: 48px;
   display: flex;
@@ -114,10 +115,10 @@
 .pagination p {
   margin: 0px 8px;
 }
-.pagination .prev-arrow img {
+.pagination .prev-arrow {
   transform: rotate(180deg);
 }
-.pagination-active {
+.pagination .current {
   background: #1890FF !important;
   box-shadow: 0px 8px 16px rgba(24, 144, 255, 0.32);
   color: white;

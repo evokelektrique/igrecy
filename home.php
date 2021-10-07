@@ -45,7 +45,16 @@
          </div>
       <?php endwhile; ?>
    </div>
-   <div class="pagination">
+   <?php
+   global $wp_query;
+
+   $paged = ( get_query_var( 'paged' ) ) ? absint( get_query_var( 'paged' ) ) : 1;
+   if (function_exists('custom_pagination')):
+     custom_pagination($wp_query->max_num_pages, "", $paged);
+   endif;
+   wp_reset_query();
+   ?>
+<!--    <div class="pagination">
       <a href="#" class="prev-arrow">
          <img src="<?= get_template_directory_uri() . "/dist" ?>/src/images/slide-change-arrow.svg" alt="">
       </a>
@@ -61,7 +70,7 @@
       <a href="#" class="next-arrow">
          <img src="<?= get_template_directory_uri() . "/dist" ?>/src/images/slide-change-arrow.svg" alt="">
       </a>
-   </div>
+   </div> -->
 </div>
 
 <?php get_footer(); ?>
