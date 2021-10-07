@@ -31,7 +31,11 @@
          <div class="blog-cart-box bordered">
             <div class="blog-thumbnail">
                <img src="<?= get_the_post_thumbnail_url(); ?>" alt="" />
-               <p class="p-small blog-category">بازاریابی</p>
+               <?php
+               $terms = get_the_terms(get_the_ID(), 'category');
+               $term = $terms[0]->name;
+               ?>
+               <p class="p-small blog-category"><?= $term ?></p>
             </div>
             <div class="blog-cart-content">
                <h5 class="blog-cart-title">
@@ -54,23 +58,6 @@
    endif;
    wp_reset_query();
    ?>
-<!--    <div class="pagination">
-      <a href="#" class="prev-arrow">
-         <img src="<?= get_template_directory_uri() . "/dist" ?>/src/images/slide-change-arrow.svg" alt="">
-      </a>
-      <a href="#">
-         ۱
-      </a>
-      <a class="pagination-active" href="#">۲</a>
-      <a href="#">
-         ۳
-      </a>
-      <p>...</p>
-      <a href="#">۱۲</a>
-      <a href="#" class="next-arrow">
-         <img src="<?= get_template_directory_uri() . "/dist" ?>/src/images/slide-change-arrow.svg" alt="">
-      </a>
-   </div> -->
 </div>
 
 <?php get_footer(); ?>
