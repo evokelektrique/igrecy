@@ -16,4 +16,8 @@ add_action( 'after_setup_theme', 'crb_load' );
 
 // Remove woocommrce parts
 remove_action( 'woocommerce_before_main_content', 'woocommerce_output_content_wrapper', 10 );
+remove_action( 'woocommerce_before_shop_loop', 'woocommerce_result_count', 20 );
+add_action( 'woocommerce_output_all_notices', function() {
+   var_dump("test");
+}, 19);
 

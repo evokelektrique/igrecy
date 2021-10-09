@@ -1,6 +1,5 @@
 <?php get_header(); ?>
-Home
-<!--
+
 <div class="main-header-container">
    <div class="wrapper container">
       <div class="content-header-container">
@@ -9,19 +8,38 @@ Home
             <h1>چی دوست داری یاد بگیری</h1>
             <p class="text-3">لورم ایپسوم یا طرح‌نما (به انگلیس\ عنوان عنصری از ترکیب بندی برای پر کردن صفحه و ارایه اولیه شکل ظاهری و کلی طرح سفارش گرفته شده استفاده می نماید،</p>
          </div>
-         <div class="shadow-normal search-category-container">
-            <input type="text" placeholder="رشته، نرم افزار، یا..." />
-            <select name="" id="">
-               <option value="کتگوری اول">دسته بندیت رو انتخاب کن</option>
-               <option value="کتگوری اول">first category</option>
-               <option value="کتگوری اول">first category</option>
-               <option value="کتگوری اول">first category</option>
-            </select>
-            <button type="submit" class="btn btn-primary btn-normal btn-shadow-normal">
-               <p>جستجو</p>
-               <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/search-header-white.svg" alt="">
-            </button>
-         </div>
+         <form class="shadow-normal search-category-container" name="myform" method="GET" action="<?php echo esc_url(home_url('/')); ?>">
+
+               <?php if (class_exists('WooCommerce')) : ?>
+               <?php
+               if(isset($_REQUEST['product_cat']) && !empty($_REQUEST['product_cat']))
+               {
+                  $optsetlect=$_REQUEST['product_cat'];
+               }
+               else{
+                  $optsetlect=0;
+               }
+               $args = array(
+                  'show_option_all' => esc_html__( 'دسته بندیت رو انتخاب کن', 'ig' ),
+                  'hierarchical' => 1,
+                  'class' => 'cat',
+                  'echo' => 1,
+                  'value_field' => 'slug',
+                  'selected' => $optsetlect
+               );
+               $args['taxonomy'] = 'product_cat';
+               $args['name'] = 'product_cat';
+               $args['class'] = 'cate-dropdown hidden-xs';
+               ?>
+               <input type="hidden" value="product" name="post_type">
+               <?php endif; ?>
+               <input type="text" name="s" class="searchbox" maxlength="128" value="<?php echo get_search_query(); ?>" placeholder="رشته، نرم افزار، یا...">
+               <?php wp_dropdown_categories($args); ?>
+               <button type="submit" class="btn btn-primary btn-normal btn-shadow-normal">
+                  <p>جستجو</p>
+                  <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/search-header-white.svg" alt="">
+               </button>
+            </form>
       </div>
       <img class="header-pic" src="<?= get_template_directory_uri() . "/dist/src" ?>/images/header-pic.png" alt="" />
    </div>
@@ -74,151 +92,69 @@ Home
 <div class="products-slider-container container">
    <div class="header-slider-container">
       <h2 class="highlight yello-highlight">جدید ترین آموزش ها</h2>
-      <a class="primary-blue-text" href="#">مشاهده همه</a>
+      <a class="primary-blue-text" href="<?= get_permalink( wc_get_page_id( 'shop' ) ); ?>">مشاهده همه</a>
    </div>
    <div class="products-slider">
       <div class="swiper-container">
          <div class="swiper-wrapper products-slider-wrapper">
+            <?php
+            $args = array(
+               'post_type'      => 'product',
+               'posts_per_page' => 5,
+               'order'          => 'DESC'
+            );
+
+            $loop = new WP_Query( $args );
+
+            while ( $loop->have_posts() ) : $loop->the_post();
+               global $product;
+               $rating  = intval($product->get_average_rating());
+               $terms = get_the_terms( $product->get_id(), 'product_cat' );
+            ?>
             <div class="swiper-slide">
                <div class="course-box-container shadow-normal">
-                  <img class="thumbnail" src="<?= get_template_directory_uri() . "/dist/src" ?>/images/thumbnail.jpg" alt="" />
-                  <a href="#">
-                     <h5>آموزش ساخت بازی با موتور بازی سازی</h5>
+                  <img class="thumbnail" src="<?= get_the_post_thumbnail_url(); ?>" alt="<?php the_time(); ?>" />
+                  <a href="<?= get_the_permalink(); ?>">
+                     <h5><?php the_title(); ?></h5>
                   </a>
                   <div class="extra-course-details">
-                     <p class="label course-category">بازی سازی</p>
+                     <p class="label course-category"><?= $terms[0]->name ?></p>
                      <div class="course-rating">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
+                        <?php for ($i=0; $i < 6; $i++) {
+                           if($rating > $i) {
+                              ?>
+                              <img src="<?= get_template_directory_uri() . "/dist" ?>/src/images/star-filled.svg" alt="4" />
+                              <?php
+                           } else {
+                              ?>
+                              <img src="<?= get_template_directory_uri() . "/dist" ?>/src/images/star.svg" alt="4" />
+                              <?php
+                           }
+                        }
+                        ?>
                      </div>
                   </div>
                   <p class="text-3 course-except">
-                     چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت فرصت‌های کسب درآمد آنلاین + اصول راه‌
+                     <?php the_excerpt(); ?>
                   </p>
                   <div class="course-time">
                      <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/clock.svg" alt="" />
-                     <p class="deactivated-text">۰۲:۳۲:۰۰</p>
+                     <p class="deactivated-text"><?= carbon_get_the_post_meta('course_time') ?></p>
                   </div>
                   <div class="course-price-container">
-                     <p class="course-price">۱۸۰,۰۰۰ تومان</p>
+                     <?php if($product->is_on_sale()): ?>
+                     <p class="course-price discounted-price"><?= $product->get_sale_price() ?> تومان</p>
+                     <p class="course-price has-discount"><?= $product->get_regular_price() ?> تومان</p>
+                     <?php else: ?>
+                     <p class="course-price"><?= $product->get_regular_price() ?> تومان</p>
+                     <?php endif; ?>
                   </div>
                </div>
             </div>
-            <div class="swiper-slide">
-               <div class="course-box-container shadow-normal">
-                  <img class="thumbnail" src="<?= get_template_directory_uri() . "/dist/src" ?>/images/thumbnail.jpg" alt="" />
-                  <a href="#">
-                     <h5>آموزش ساخت بازی با موتور بازی سازی</h5>
-                  </a>
-                  <div class="extra-course-details">
-                     <p class="label course-category">بازی سازی</p>
-                     <div class="course-rating">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                     </div>
-                  </div>
-                  <p class="text-3 course-except">
-                     چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت فرصت‌های کسب درآمد آنلاین + اصول راه‌
-                  </p>
-                  <div class="course-time">
-                     <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/clock.svg" alt="" />
-                     <p class="deactivated-text">۰۲:۳۲:۰۰</p>
-                  </div>
-                  <div class="course-price-container">
-                     <p class="course-price">۱۸۰,۰۰۰ تومان</p>
-                  </div>
-               </div>
-            </div>
-            <div class="swiper-slide">
-               <div class="course-box-container shadow-normal">
-                  <img class="thumbnail" src="<?= get_template_directory_uri() . "/dist/src" ?>/images/thumbnail.jpg" alt="" />
-                  <a href="#">
-                     <h5>آموزش ساخت بازی با موتور بازی سازی</h5>
-                  </a>
-                  <div class="extra-course-details">
-                     <p class="label course-category">بازی سازی</p>
-                     <div class="course-rating">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                     </div>
-                  </div>
-                  <p class="text-3 course-except">
-                     چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت فرصت‌های کسب درآمد آنلاین + اصول راه‌
-                  </p>
-                  <div class="course-time">
-                     <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/clock.svg" alt="" />
-                     <p class="deactivated-text">۰۲:۳۲:۰۰</p>
-                  </div>
-                  <div class="course-price-container">
-                     <p class="course-price">۱۸۰,۰۰۰ تومان</p>
-                  </div>
-               </div>
-            </div>
-            <div class="swiper-slide">
-               <div class="course-box-container shadow-normal">
-                  <img class="thumbnail" src="<?= get_template_directory_uri() . "/dist/src" ?>/images/thumbnail.jpg" alt="" />
-                  <a href="#">
-                     <h5>آموزش ساخت بازی با موتور بازی سازی</h5>
-                  </a>
-                  <div class="extra-course-details">
-                     <p class="label course-category">بازی سازی</p>
-                     <div class="course-rating">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                     </div>
-                  </div>
-                  <p class="text-3 course-except">
-                     چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت فرصت‌های کسب درآمد آنلاین + اصول راه‌
-                  </p>
-                  <div class="course-time">
-                     <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/clock.svg" alt="" />
-                     <p class="deactivated-text">۰۲:۳۲:۰۰</p>
-                  </div>
-                  <div class="course-price-container">
-                     <p class="course-price">۱۸۰,۰۰۰ تومان</p>
-                  </div>
-               </div>
-            </div>
-            <div class="swiper-slide">
-               <div class="course-box-container shadow-normal">
-                  <img class="thumbnail" src="<?= get_template_directory_uri() . "/dist/src" ?>/images/thumbnail.jpg" alt="" />
-                  <a href="#">
-                     <h5>آموزش ساخت بازی با موتور بازی سازی</h5>
-                  </a>
-                  <div class="extra-course-details">
-                     <p class="label course-category">بازی سازی</p>
-                     <div class="course-rating">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                     </div>
-                  </div>
-                  <p class="text-3 course-except">
-                     چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت فرصت‌های کسب درآمد آنلاین + اصول راه‌
-                  </p>
-                  <div class="course-time">
-                     <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/clock.svg" alt="" />
-                     <p class="deactivated-text">۰۲:۳۲:۰۰</p>
-                  </div>
-                  <div class="course-price-container">
-                     <p class="course-price">۱۸۰,۰۰۰ تومان</p>
-                  </div>
-               </div>
-            </div>
+            <?php
+            endwhile;
+            wp_reset_query();
+            ?>
          </div>
          <div class="swiper-pagination products-slider-pagination"></div>
       </div>
@@ -234,177 +170,66 @@ Home
    <div class="products-slider">
       <div class="swiper-container">
          <div class="swiper-wrapper products-slider-wrapper">
+            <?php
+            $args = array(
+               'post_type'      => 'product',
+               'meta_key'       => 'total_sales',
+               'orderby'        => 'meta_value_num',
+               'posts_per_page' => 5,
+               'order'          => 'DESC'
+            );
+
+            $loop = new WP_Query( $args );
+
+            while ( $loop->have_posts() ) : $loop->the_post();
+               global $product;
+               $rating  = intval($product->get_average_rating());
+               $terms = get_the_terms( $product->get_id(), 'product_cat' );
+            ?>
             <div class="swiper-slide">
                <div class="course-box-container shadow-normal">
-                  <img class="thumbnail" src="<?= get_template_directory_uri() . "/dist/src" ?>/images/thumbnail.jpg" alt="" />
-                  <a href="#">
-                     <h5>آموزش ساخت بازی با موتور بازی سازی</h5>
+                  <img class="thumbnail" src="<?= get_the_post_thumbnail_url(); ?>" alt="<?php the_time(); ?>" />
+                  <a href="<?= get_the_permalink(); ?>">
+                     <h5><?php the_title(); ?></h5>
                   </a>
                   <div class="extra-course-details">
-                     <p class="label course-category">بازی سازی</p>
+                     <p class="label course-category"><?= $terms[0]->name ?></p>
                      <div class="course-rating">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
+                        <?php for ($i=0; $i < 6; $i++) {
+                           if($rating > $i) {
+                              ?>
+                              <img src="<?= get_template_directory_uri() . "/dist" ?>/src/images/star-filled.svg" alt="4" />
+                              <?php
+                           } else {
+                              ?>
+                              <img src="<?= get_template_directory_uri() . "/dist" ?>/src/images/star.svg" alt="4" />
+                              <?php
+                           }
+                        }
+                        ?>
                      </div>
                   </div>
                   <p class="text-3 course-except">
-                     چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت فرصت‌های کسب درآمد آنلاین + اصول راه‌
+                     <?php the_excerpt(); ?>
                   </p>
                   <div class="course-time">
                      <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/clock.svg" alt="" />
-                     <p class="deactivated-text">۰۲:۳۲:۰۰</p>
+                     <p class="deactivated-text"><?= carbon_get_the_post_meta('course_time') ?></p>
                   </div>
                   <div class="course-price-container">
-                     <p class="course-price">۱۸۰,۰۰۰ تومان</p>
+                     <?php if($product->is_on_sale()): ?>
+                     <p class="course-price discounted-price"><?= $product->get_sale_price() ?> تومان</p>
+                     <p class="course-price has-discount"><?= $product->get_regular_price() ?> تومان</p>
+                     <?php else: ?>
+                     <p class="course-price"><?= $product->get_regular_price() ?> تومان</p>
+                     <?php endif; ?>
                   </div>
                </div>
             </div>
-            <div class="swiper-slide">
-               <div class="course-box-container shadow-normal">
-                  <img class="thumbnail" src="<?= get_template_directory_uri() . "/dist/src" ?>/images/thumbnail.jpg" alt="" />
-                  <a href="#">
-                     <h5>آموزش ساخت بازی با موتور بازی سازی</h5>
-                  </a>
-                  <div class="extra-course-details">
-                     <p class="label course-category">بازی سازی</p>
-                     <div class="course-rating">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                     </div>
-                  </div>
-                  <p class="text-3 course-except">
-                     چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت فرصت‌های کسب درآمد آنلاین + اصول راه‌
-                  </p>
-                  <div class="course-time">
-                     <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/clock.svg" alt="" />
-                     <p class="deactivated-text">۰۲:۳۲:۰۰</p>
-                  </div>
-                  <div class="course-price-container">
-                     <p class="course-price has-discount">۱۸۰,۰۰۰</p>
-                     <p class="course-price discounted-price">۱۶۳,۰۰۰ تومان</p>
-                  </div>
-               </div>
-            </div>
-            <div class="swiper-slide">
-               <div class="course-box-container shadow-normal">
-                  <img class="thumbnail" src="<?= get_template_directory_uri() . "/dist/src" ?>/images/thumbnail.jpg" alt="" />
-                  <a href="#">
-                     <h5>آموزش ساخت بازی با موتور بازی سازی</h5>
-                  </a>
-                  <div class="extra-course-details">
-                     <p class="label course-category">بازی سازی</p>
-                     <div class="course-rating">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                     </div>
-                  </div>
-                  <p class="text-3 course-except">
-                     چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت فرصت‌های کسب درآمد آنلاین + اصول راه‌
-                  </p>
-                  <div class="course-time">
-                     <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/clock.svg" alt="" />
-                     <p class="deactivated-text">۰۲:۳۲:۰۰</p>
-                  </div>
-                  <div class="course-price-container">
-                     <p class="course-price">۱۸۰,۰۰۰ تومان</p>
-                  </div>
-               </div>
-            </div>
-            <div class="swiper-slide">
-               <div class="course-box-container shadow-normal">
-                  <img class="thumbnail" src="<?= get_template_directory_uri() . "/dist/src" ?>/images/thumbnail.jpg" alt="" />
-                  <a href="#">
-                     <h5>آموزش ساخت بازی با موتور بازی سازی</h5>
-                  </a>
-                  <div class="extra-course-details">
-                     <p class="label course-category">بازی سازی</p>
-                     <div class="course-rating">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                     </div>
-                  </div>
-                  <p class="text-3 course-except">
-                     چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت فرصت‌های کسب درآمد آنلاین + اصول راه‌
-                  </p>
-                  <div class="course-time">
-                     <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/clock.svg" alt="" />
-                     <p class="deactivated-text">۰۲:۳۲:۰۰</p>
-                  </div>
-                  <div class="course-price-container">
-                     <p class="course-price has-discount">۱۸۰,۰۰۰</p>
-                     <p class="course-price discounted-price">۱۶۳,۰۰۰ تومان</p>
-                  </div>
-               </div>
-            </div>
-            <div class="swiper-slide">
-               <div class="course-box-container shadow-normal">
-                  <img class="thumbnail" src="<?= get_template_directory_uri() . "/dist/src" ?>/images/thumbnail.jpg" alt="" />
-                  <a href="#">
-                     <h5>آموزش ساخت بازی با موتور بازی سازی</h5>
-                  </a>
-                  <div class="extra-course-details">
-                     <p class="label course-category">بازی سازی</p>
-                     <div class="course-rating">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                     </div>
-                  </div>
-                  <p class="text-3 course-except">
-                     چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت فرصت‌های کسب درآمد آنلاین + اصول راه‌
-                  </p>
-                  <div class="course-time">
-                     <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/clock.svg" alt="" />
-                     <p class="deactivated-text">۰۲:۳۲:۰۰</p>
-                  </div>
-                  <div class="course-price-container">
-                     <p class="course-price">۱۸۰,۰۰۰ تومان</p>
-                  </div>
-               </div>
-            </div>
-            <div class="swiper-slide">
-               <div class="course-box-container shadow-normal">
-                  <img class="thumbnail" src="<?= get_template_directory_uri() . "/dist/src" ?>/images/thumbnail.jpg" alt="" />
-                  <a href="#">
-                     <h5>آموزش ساخت بازی با موتور بازی سازی</h5>
-                  </a>
-                  <div class="extra-course-details">
-                     <p class="label course-category">بازی سازی</p>
-                     <div class="course-rating">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                     </div>
-                  </div>
-                  <p class="text-3 course-except">
-                     چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت فرصت‌های کسب درآمد آنلاین + اصول راه‌
-                  </p>
-                  <div class="course-time">
-                     <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/clock.svg" alt="" />
-                     <p class="deactivated-text">۰۲:۳۲:۰۰</p>
-                  </div>
-                  <div class="course-price-container">
-                     <p class="course-price has-discount">۱۸۰,۰۰۰</p>
-                     <p class="course-price discounted-price">۱۶۳,۰۰۰ تومان</p>
-                  </div>
-               </div>
-            </div>
+            <?php
+            endwhile;
+            wp_reset_query();
+            ?>
          </div>
          <div class="swiper-pagination products-slider-pagination"></div>
       </div>
@@ -451,177 +276,72 @@ Home
    <div class="products-slider">
       <div class="swiper-container">
          <div class="swiper-wrapper products-slider-wrapper">
+            <?php
+            $args = array(
+               'post_type'      => 'product',
+               'posts_per_page' => 5,
+               'order'          => 'DESC',
+               'tax_query' => array(
+                  array(
+                     'taxonomy'      => 'product_cat',
+                     'field'         => 'term_id',
+                     'terms'         => 23,
+                     'operator'      => 'IN'
+                  ),
+               )
+            );
+
+            $loop = new WP_Query( $args );
+
+            while ( $loop->have_posts() ) : $loop->the_post();
+               global $product;
+               $rating  = intval($product->get_average_rating());
+               $terms = get_the_terms( $product->get_id(), 'product_cat' );
+            ?>
             <div class="swiper-slide">
                <div class="course-box-container shadow-normal">
-                  <img class="thumbnail" src="<?= get_template_directory_uri() . "/dist/src" ?>/images/thumbnail.jpg" alt="" />
-                  <a href="#">
-                     <h5>آموزش ساخت بازی با موتور بازی سازی</h5>
+                  <img class="thumbnail" src="<?= get_the_post_thumbnail_url(); ?>" alt="<?php the_time(); ?>" />
+                  <a href="<?= get_the_permalink(); ?>">
+                     <h5><?php the_title(); ?></h5>
                   </a>
                   <div class="extra-course-details">
-                     <p class="label course-category">بازی سازی</p>
+                     <p class="label course-category"><?= $terms[0]->name ?></p>
                      <div class="course-rating">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
+                        <?php for ($i=0; $i < 6; $i++) {
+                           if($rating > $i) {
+                              ?>
+                              <img src="<?= get_template_directory_uri() . "/dist" ?>/src/images/star-filled.svg" alt="4" />
+                              <?php
+                           } else {
+                              ?>
+                              <img src="<?= get_template_directory_uri() . "/dist" ?>/src/images/star.svg" alt="4" />
+                              <?php
+                           }
+                        }
+                        ?>
                      </div>
                   </div>
                   <p class="text-3 course-except">
-                     چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت فرصت‌های کسب درآمد آنلاین + اصول راه‌
+                     <?php the_excerpt(); ?>
                   </p>
                   <div class="course-time">
                      <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/clock.svg" alt="" />
-                     <p class="deactivated-text">۰۲:۳۲:۰۰</p>
+                     <p class="deactivated-text"><?= carbon_get_the_post_meta('course_time') ?></p>
                   </div>
                   <div class="course-price-container">
-                     <p class="course-price">۱۸۰,۰۰۰ تومان</p>
+                     <?php if($product->is_on_sale()): ?>
+                     <p class="course-price discounted-price"><?= $product->get_sale_price() ?> تومان</p>
+                     <p class="course-price has-discount"><?= $product->get_regular_price() ?> تومان</p>
+                     <?php else: ?>
+                     <p class="course-price"><?= $product->get_regular_price() ?> تومان</p>
+                     <?php endif; ?>
                   </div>
                </div>
             </div>
-            <div class="swiper-slide">
-               <div class="course-box-container shadow-normal">
-                  <img class="thumbnail" src="<?= get_template_directory_uri() . "/dist/src" ?>/images/thumbnail.jpg" alt="" />
-                  <a href="#">
-                     <h5>آموزش ساخت بازی با موتور بازی سازی</h5>
-                  </a>
-                  <div class="extra-course-details">
-                     <p class="label course-category">بازی سازی</p>
-                     <div class="course-rating">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                     </div>
-                  </div>
-                  <p class="text-3 course-except">
-                     چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت فرصت‌های کسب درآمد آنلاین + اصول راه‌
-                  </p>
-                  <div class="course-time">
-                     <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/clock.svg" alt="" />
-                     <p class="deactivated-text">۰۲:۳۲:۰۰</p>
-                  </div>
-                  <div class="course-price-container">
-                     <p class="course-price has-discount">۱۸۰,۰۰۰</p>
-                     <p class="course-price discounted-price">۱۶۳,۰۰۰ تومان</p>
-                  </div>
-               </div>
-            </div>
-            <div class="swiper-slide">
-               <div class="course-box-container shadow-normal">
-                  <img class="thumbnail" src="<?= get_template_directory_uri() . "/dist/src" ?>/images/thumbnail.jpg" alt="" />
-                  <a href="#">
-                     <h5>آموزش ساخت بازی با موتور بازی سازی</h5>
-                  </a>
-                  <div class="extra-course-details">
-                     <p class="label course-category">بازی سازی</p>
-                     <div class="course-rating">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                     </div>
-                  </div>
-                  <p class="text-3 course-except">
-                     چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت فرصت‌های کسب درآمد آنلاین + اصول راه‌
-                  </p>
-                  <div class="course-time">
-                     <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/clock.svg" alt="" />
-                     <p class="deactivated-text">۰۲:۳۲:۰۰</p>
-                  </div>
-                  <div class="course-price-container">
-                     <p class="course-price">۱۸۰,۰۰۰ تومان</p>
-                  </div>
-               </div>
-            </div>
-            <div class="swiper-slide">
-               <div class="course-box-container shadow-normal">
-                  <img class="thumbnail" src="<?= get_template_directory_uri() . "/dist/src" ?>/images/thumbnail.jpg" alt="" />
-                  <a href="#">
-                     <h5>آموزش ساخت بازی با موتور بازی سازی</h5>
-                  </a>
-                  <div class="extra-course-details">
-                     <p class="label course-category">بازی سازی</p>
-                     <div class="course-rating">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                     </div>
-                  </div>
-                  <p class="text-3 course-except">
-                     چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت فرصت‌های کسب درآمد آنلاین + اصول راه‌
-                  </p>
-                  <div class="course-time">
-                     <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/clock.svg" alt="" />
-                     <p class="deactivated-text">۰۲:۳۲:۰۰</p>
-                  </div>
-                  <div class="course-price-container">
-                     <p class="course-price has-discount">۱۸۰,۰۰۰</p>
-                     <p class="course-price discounted-price">۱۶۳,۰۰۰ تومان</p>
-                  </div>
-               </div>
-            </div>
-            <div class="swiper-slide">
-               <div class="course-box-container shadow-normal">
-                  <img class="thumbnail" src="<?= get_template_directory_uri() . "/dist/src" ?>/images/thumbnail.jpg" alt="" />
-                  <a href="#">
-                     <h5>آموزش ساخت بازی با موتور بازی سازی</h5>
-                  </a>
-                  <div class="extra-course-details">
-                     <p class="label course-category">بازی سازی</p>
-                     <div class="course-rating">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                     </div>
-                  </div>
-                  <p class="text-3 course-except">
-                     چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت فرصت‌های کسب درآمد آنلاین + اصول راه‌
-                  </p>
-                  <div class="course-time">
-                     <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/clock.svg" alt="" />
-                     <p class="deactivated-text">۰۲:۳۲:۰۰</p>
-                  </div>
-                  <div class="course-price-container">
-                     <p class="course-price">۱۸۰,۰۰۰ تومان</p>
-                  </div>
-               </div>
-            </div>
-            <div class="swiper-slide">
-               <div class="course-box-container shadow-normal">
-                  <img class="thumbnail" src="<?= get_template_directory_uri() . "/dist/src" ?>/images/thumbnail.jpg" alt="" />
-                  <a href="#">
-                     <h5>آموزش ساخت بازی با موتور بازی سازی</h5>
-                  </a>
-                  <div class="extra-course-details">
-                     <p class="label course-category">بازی سازی</p>
-                     <div class="course-rating">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/star-filled.svg" alt="">
-                     </div>
-                  </div>
-                  <p class="text-3 course-except">
-                     چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت فرصت‌های کسب درآمد آنلاین + اصول راه‌
-                  </p>
-                  <div class="course-time">
-                     <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/clock.svg" alt="" />
-                     <p class="deactivated-text">۰۲:۳۲:۰۰</p>
-                  </div>
-                  <div class="course-price-container">
-                     <p class="course-price has-discount">۱۸۰,۰۰۰</p>
-                     <p class="course-price discounted-price">۱۶۳,۰۰۰ تومان</p>
-                  </div>
-               </div>
-            </div>
+            <?php
+            endwhile;
+            wp_reset_query();
+            ?>
          </div>
          <div class="swiper-pagination products-slider-pagination"></div>
       </div>
@@ -661,146 +381,44 @@ Home
             <h2>بلاگ ما</h2>
             <p class="text-3">چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم</p>
          </div>
-         <a class="btn btn-primary btn-shadow-normal btn-large" href="#">ورود به وبلاگ</a>
+         <a class="btn btn-primary btn-shadow-normal btn-large" href="<?= get_permalink( get_option( 'page_for_posts' ) ); ?>">ورود به وبلاگ</a>
       </div>
       <div class="blogs-slider">
          <div class="swiper-container">
             <div class="swiper-wrapper products-slider-wrapper">
+               <?php
+               $args = array(
+                  'posts_per_page' => 5,
+                  'order'          => 'DESC',
+               );
+
+               $loop = new WP_Query( $args );
+
+               while ( $loop->have_posts() ) : $loop->the_post();
+                  global $post;
+                  $terms = get_the_terms( get_the_ID(), 'category' );
+               ?>
                <div class="swiper-slide">
                   <div class="blog-cart-box shadow-normal">
                      <div class="blog-thumbnail">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/thumbnail.jpg" alt="" />
-                        <p class="p-small blog-category">بازاریابی</p>
+                        <img src="<?= get_the_post_thumbnail_url(); ?>" alt="<?php the_title(); ?>" />
+                        <p class="p-small blog-category"><?= $terms[0]->name ?></p>
                      </div>
                      <div class="blog-cart-content">
-                        <div class="blog-extra-details">
-                           <div class="read-time">
-                              <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/timer.svg" alt="">
-                              <p class="p-small">2 دقیقه</p>
-                           </div>
-                           <div class="post-likes">
-                              <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/like.svg" alt="">
-                              <p class="p-small">۱۶</p>
-                           </div>
-                        </div>
                         <h5 class="blog-cart-title">
-                           بهترین منبع آموزش زبان کجاست؟
+                           <?php the_title(); ?>
                         </h5>
                         <p class="text-3 blog-cart-except">
-                           چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت فرصت‌های کسب درآمد چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت
+                           <?php the_excerpt() ?>
                         </p>
-                        <a class="primary-blue-text" href="#">ادامه مطلب</a>
+                        <a class="primary-blue-text" href="<?= get_the_permalink(); ?>">ادامه مطلب</a>
                      </div>
                   </div>
                </div>
-               <div class="swiper-slide">
-                  <div class="blog-cart-box shadow-normal">
-                     <div class="blog-thumbnail">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/thumbnail.jpg" alt="" />
-                        <p class="p-small blog-category">بازاریابی</p>
-                     </div>
-                     <div class="blog-cart-content">
-                        <div class="blog-extra-details">
-                           <div class="read-time">
-                              <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/timer.svg" alt="">
-                              <p class="p-small">2 دقیقه</p>
-                           </div>
-                           <div class="post-likes">
-                              <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/like.svg" alt="">
-                              <p class="p-small">۱۶</p>
-                           </div>
-                        </div>
-                        <h5 class="blog-cart-title">
-                           بهترین منبع آموزش زبان کجاست؟
-                        </h5>
-                        <p class="text-3 blog-cart-except">
-                           چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت فرصت‌های کسب درآمد چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت
-                        </p>
-                        <a class="primary-blue-text" href="#">ادامه مطلب</a>
-                     </div>
-                  </div>
-               </div>
-               <div class="swiper-slide">
-                  <div class="blog-cart-box shadow-normal">
-                     <div class="blog-thumbnail">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/thumbnail.jpg" alt="" />
-                        <p class="p-small blog-category">بازاریابی</p>
-                     </div>
-                     <div class="blog-cart-content">
-                        <div class="blog-extra-details">
-                           <div class="read-time">
-                              <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/timer.svg" alt="">
-                              <p class="p-small">2 دقیقه</p>
-                           </div>
-                           <div class="post-likes">
-                              <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/like.svg" alt="">
-                              <p class="p-small">۱۶</p>
-                           </div>
-                        </div>
-                        <h5 class="blog-cart-title">
-                           بهترین منبع آموزش زبان کجاست؟
-                        </h5>
-                        <p class="text-3 blog-cart-except">
-                           چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت فرصت‌های کسب درآمد چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت
-                        </p>
-                        <a class="primary-blue-text" href="#">ادامه مطلب</a>
-                     </div>
-                  </div>
-               </div>
-               <div class="swiper-slide">
-                  <div class="blog-cart-box shadow-normal">
-                     <div class="blog-thumbnail">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/thumbnail.jpg" alt="" />
-                        <p class="p-small blog-category">بازاریابی</p>
-                     </div>
-                     <div class="blog-cart-content">
-                        <div class="blog-extra-details">
-                           <div class="read-time">
-                              <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/timer.svg" alt="">
-                              <p class="p-small">2 دقیقه</p>
-                           </div>
-                           <div class="post-likes">
-                              <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/like.svg" alt="">
-                              <p class="p-small">۱۶</p>
-                           </div>
-                        </div>
-                        <h5 class="blog-cart-title">
-                           بهترین منبع آموزش زبان کجاست؟
-                        </h5>
-                        <p class="text-3 blog-cart-except">
-                           چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت فرصت‌های کسب درآمد چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت
-                        </p>
-                        <a class="primary-blue-text" href="#">ادامه مطلب</a>
-                     </div>
-                  </div>
-               </div>
-               <div class="swiper-slide">
-                  <div class="blog-cart-box shadow-normal">
-                     <div class="blog-thumbnail">
-                        <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/thumbnail.jpg" alt="" />
-                        <p class="p-small blog-category">بازاریابی</p>
-                     </div>
-                     <div class="blog-cart-content">
-                        <div class="blog-extra-details">
-                           <div class="read-time">
-                              <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/timer.svg" alt="">
-                              <p class="p-small">2 دقیقه</p>
-                           </div>
-                           <div class="post-likes">
-                              <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/like.svg" alt="">
-                              <p class="p-small">۱۶</p>
-                           </div>
-                        </div>
-                        <h5 class="blog-cart-title">
-                           بهترین منبع آموزش زبان کجاست؟
-                        </h5>
-                        <p class="text-3 blog-cart-except">
-                           چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت فرصت‌های کسب درآمد چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت
-                        </p>
-                        <a class="primary-blue-text" href="#">ادامه مطلب</a>
-                     </div>
-                  </div>
-               </div>
+               <?php
+               endwhile;
+               wp_reset_query();
+               ?>
             </div>
          </div>
          <div class="swiper-button-prev slide-change-btn prev-arrow"></div>
@@ -816,66 +434,26 @@ Home
    <div class="products-slider">
       <div class="swiper-container">
          <div class="swiper-wrapper products-slider-wrapper">
+            <?php
+            $comments = carbon_get_theme_option('students_comments');
+            foreach($comments as $comment):
+            ?>
             <div class="swiper-slide">
                <div class="comment-box shadow-normal">
-                  <p class="comment text-3">چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت فرصت‌های کسب درآمد چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت چگونه تبلیغات هدفمند در اینستاگرام انجام</p>
+                  <p class="comment text-3"><?= $comment['description'] ?></p>
                   <div class="comment-user-profile">
-                     <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/user-profile.png" alt="">
+                     <img src="<?= $comment['img_url'] ?>" alt="<?= $comment['name'] ?>">
                      <div class="comment-user-details">
-                        <h5>زهرا طیبی</h5>
+                        <h5><?= $comment['name'] ?></h5>
                         <p class="p-small primary-blue-text">
-                           دانشجوی
-                           <span class="primary-blue-text">برق</span>
+                           <?= $comment['role'] ?>
                         </p>
                      </div>
                   </div>
                </div>
             </div>
-            <div class="swiper-slide">
-               <div class="comment-box shadow-normal">
-                  <p class="comment text-3">چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت فرصت‌های کسب درآمد چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت فرصت‌های کسب درآمد چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت شصی</p>
-                  <div class="comment-user-profile">
-                     <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/user-profile.png" alt="">
-                     <div class="comment-user-details">
-                        <h5>زهرا طیبی</h5>
-                        <p class="p-small primary-blue-text">
-                           دانشجوی
-                           <span class="primary-blue-text">برق</span>
-                        </p>
-                     </div>
-                  </div>
-               </div>
-            </div>
-            <div class="swiper-slide">
-               <div class="comment-box shadow-normal">
-                  <p class="comment text-3">چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت فرصت‌های کسب درآمد چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت چگونه تبلیغات هدفم</p>
-                  <div class="comment-user-profile">
-                     <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/user-profile.png" alt="">
-                     <div class="comment-user-details">
-                        <h5>زهرا طیبی</h5>
-                        <p class="p-small primary-blue-text">
-                           دانشجوی
-                           <span class="primary-blue-text">برق</span>
-                        </p>
-                     </div>
-                  </div>
-               </div>
-            </div>
-            <div class="swiper-slide">
-               <div class="comment-box shadow-normal">
-                  <p class="comment text-3">چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت فرصت‌های کسب درآمد چگونه تبلیغات هدفمند در اینستاگرام انجام دهیم شناخت چگونه تبلیغات هدفم</p>
-                  <div class="comment-user-profile">
-                     <img src="<?= get_template_directory_uri() . "/dist/src" ?>/images/user-profile.png" alt="">
-                     <div class="comment-user-details">
-                        <h5>زهرا طیبی</h5>
-                        <p class="p-small primary-blue-text">
-                           دانشجوی
-                           <span class="primary-blue-text">برق</span>
-                        </p>
-                     </div>
-                  </div>
-               </div>
-            </div>
+            <?php endforeach; ?>
+
          </div>
          <div class="swiper-pagination products-slider-pagination"></div>
       </div>
@@ -897,5 +475,5 @@ Home
       </div>
    </div>
 </div>
- -->
+
 <?php get_footer(); ?>

@@ -84,3 +84,52 @@ function custom_pagination($numpages = '', $pagerange = '', $paged='') {
  }
 }
 
+
+
+function igrecy_comment($comment, $args, $depth) {
+   $GLOBALS['comment'] = $comment;
+   ?>
+   <div class="comment <?php if($depth > 1) echo('reply-comment'); ?>" id="comment-<?php comment_ID(); ?>" style="width: 100%">
+      <div class="single-comment-wrapper">
+         <img class="user-profile-img" src="<?= get_avatar_url( $comment ) ?>" alt="" />
+
+         <div class="main-comment-section">
+            <div class="comment-header">
+               <div class="col">
+                  <div class="user-details">
+                     <h6><?= get_comment_author() ?></h6>
+                     <p class="deactivated-text"><?php printf(__('%1$s'), get_comment_date(),  false) ?></p>
+                  </div>
+               </div>
+               <div class="col">
+                  <div class="reply-btn">
+                     <img src="<?= get_template_directory_uri() . '/dist' ?>/src/images/reply.svg" alt="" />
+                     <p class="p-small text-3">
+                        <?php
+                        $args["reply_text"] = "پاسخ دادن";
+                        comment_reply_link(array_merge(
+                              $args,
+                              array('depth' => $depth, 'max_depth' => $args['max_depth'])
+                        ))
+                        ?>
+                     </p>
+                  </div>
+                  <div class="like-btn">
+                     <img src="<?= get_template_directory_uri() . '/dist' ?>/src/images/thumbs-up.svg" alt="لایک کردن" />
+                     <p class="primary-blue-text">2</p>
+                  </div>
+                  <div class="dislike-btn">
+                     <img src="<?= get_template_directory_uri() . '/dist' ?>/src/images/thumbs-down.svg" alt="دیسلایک کردن" />
+                     <p class="red-text">0</p>
+                  </div>
+               </div>
+            </div>
+            <p class="comment-content">
+               <?php comment_text() ?>
+            </p>
+         </div>
+      </div>
+   </div>
+   <?php
+}
+

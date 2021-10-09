@@ -6,6 +6,10 @@
 @import url('./product.css');
 @import url('./blog.css');
 
+html,body {
+   overflow-x: hidden;
+}
+
 .main-header-container {
   background-color: #F5F7FA;
   border-radius: 48px;
@@ -54,7 +58,7 @@
 .search-category-container input {
   color: #919EAB;
 }
-.search-category-container button img { 
+.search-category-container button img {
   display: none;
 }
 .search-category-container button p {
