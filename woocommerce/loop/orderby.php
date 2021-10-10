@@ -22,6 +22,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 
 <div class="blog-filter-container">
+   <div class="sidebar-filters-toggle-wrapper">
+      <img class="sidebar-filters-toggle" src="<?= get_template_directory_uri() . "/dist/src" ?>/images/Filter.svg" alt="" />
+   </div>
+   <div class="backdrop-sidebar-filters"></div>
    <form class="blog-category-filter woocommerce-ordering" method="get">
       <select name="orderby" class="orderby" aria-label="<?php esc_attr_e( 'Shop order', 'woocommerce' ); ?>">
          <?php foreach ( $catalog_orderby_options as $id => $name ) : ?>

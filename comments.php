@@ -17,6 +17,38 @@ if ( post_password_required() ) {
 
 <?php if ( comments_open() ) : ?>
 <style>
+.comment {
+   margin-bottom: 30px;
+}
+
+ /**
+  * Like and dislikes
+  */
+
+
+.cld-like-trigger i,
+.cld-dislike-trigger i {
+   display: none;
+}
+.cld-like-trigger {
+   padding: 0 11px;
+   background: url(<?= get_template_directory_uri() . '/dist' ?>/src/images/thumbs-up.svg);
+   width: 25px;
+   height: 25px;
+}
+.cld-like-count-wrap {
+   color: blue;
+}
+.cld-dislike-trigger {
+   padding: 0 11px;
+   background: url(<?= get_template_directory_uri() . '/dist' ?>/src/images/thumbs-down.svg);
+   width: 25px;
+   height: 25px;
+}
+.cld-dislike-count-wrap {
+   color: red;
+}
+
 .sendForm textarea {
    background: #F9FAFB;
    border: 1px solid #DFE3E8;
@@ -24,7 +56,7 @@ if ( post_password_required() ) {
    border-radius: 12px;
    margin-top: 32px;
    margin-bottom: 32px;
-   padding: 5px;
+   padding: 15px;
    width: 100%;
 }
 .sendForm button {

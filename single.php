@@ -6,11 +6,18 @@
    flex-direction: row;
    justify-content: center;
 }
+@media (max-width: 1024px) {
+   .container {
+      flex-direction: column;
+   }
+}
+
 .main {
    flex: 2;
 }
 .sidebar {
    flex: 1;
+   display: block !important;
 }
 .thumbnail {
    background: #FFFFFF;

@@ -48,6 +48,12 @@ do_action( 'woocommerce_before_account_navigation' );
    #dashboard-navigation {
     flex-direction: column;
    }
+   #dashboard-navigation li.is-active a:before {
+      right: 0 !important;
+      height: 100% !important;
+      top: 0 !important;
+      width: 2px !important;
+   }
 }
 </style>
 <ul id="dashboard-navigation">

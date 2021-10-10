@@ -120,7 +120,7 @@
                   <div class="extra-course-details">
                      <p class="label course-category"><?= $terms[0]->name ?></p>
                      <div class="course-rating">
-                        <?php for ($i=0; $i < 6; $i++) {
+                        <?php for ($i=0; $i < 5; $i++) {
                            if($rating > $i) {
                               ?>
                               <img src="<?= get_template_directory_uri() . "/dist" ?>/src/images/star-filled.svg" alt="4" />
@@ -195,7 +195,7 @@
                   <div class="extra-course-details">
                      <p class="label course-category"><?= $terms[0]->name ?></p>
                      <div class="course-rating">
-                        <?php for ($i=0; $i < 6; $i++) {
+                        <?php for ($i=0; $i < 5; $i++) {
                            if($rating > $i) {
                               ?>
                               <img src="<?= get_template_directory_uri() . "/dist" ?>/src/images/star-filled.svg" alt="4" />
@@ -307,7 +307,7 @@
                   <div class="extra-course-details">
                      <p class="label course-category"><?= $terms[0]->name ?></p>
                      <div class="course-rating">
-                        <?php for ($i=0; $i < 6; $i++) {
+                        <?php for ($i=0; $i < 5; $i++) {
                            if($rating > $i) {
                               ?>
                               <img src="<?= get_template_directory_uri() . "/dist" ?>/src/images/star-filled.svg" alt="4" />

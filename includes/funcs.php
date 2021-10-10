@@ -114,7 +114,7 @@ function igrecy_comment($comment, $args, $depth) {
                         ?>
                      </p>
                   </div>
-                  <div class="like-btn">
+<!--                   <div class="like-btn">
                      <img src="<?= get_template_directory_uri() . '/dist' ?>/src/images/thumbs-up.svg" alt="لایک کردن" />
                      <p class="primary-blue-text">2</p>
                   </div>
@@ -122,6 +122,7 @@ function igrecy_comment($comment, $args, $depth) {
                      <img src="<?= get_template_directory_uri() . '/dist' ?>/src/images/thumbs-down.svg" alt="دیسلایک کردن" />
                      <p class="red-text">0</p>
                   </div>
+ -->
                </div>
             </div>
             <p class="comment-content">
@@ -133,3 +134,41 @@ function igrecy_comment($comment, $args, $depth) {
    <?php
 }
 
+
+
+
+add_filter( 'woocommerce_checkout_fields' , 'virtual_products_less_fields' );
+/**
+ * WooCommerce Remove Address Fields from checkout based on presence of virtual products in cart
+ * @link https://www.skyverge.com/blog/checking-woocommerce-cart-contains-product-category/
+ * @link https://docs.woothemes.com/document/tutorial-customising-checkout-fields-using-actions-and-filters/
+ * @link https://businessbloomer.com/woocommerce-hide-checkout-billing-fields-if-virtual-product-cart/
+ */
+
+function virtual_products_less_fields( $fields ) {
+
+    // set our flag to be true until we find a product that isn't virtual
+    $virtual_products = true;
+
+    // loop through our cart
+    foreach( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
+     // Check if there are non-virtual products and if so make it false
+        if ( ! $cart_item['data']->is_virtual() ) $virtual_products = false;
+    }
+
+    // only unset fields if virtual_products is true so we have no physical products in the cart
+    if( $virtual_products===true) {
+        unset($fields['billing']['billing_company']);
+        unset($fields['billing']['billing_address_1']);
+        unset($fields['billing']['billing_address_2']);
+        unset($fields['billing']['billing_city']);
+        unset($fields['billing']['billing_postcode']);
+        unset($fields['billing']['billing_country']);
+        unset($fields['billing']['billing_state']);
+        unset($fields['billing']['billing_phone']);
+        //Removes Additional Info title and Order Notes
+        add_filter( 'woocommerce_enable_order_notes_field', '__return_false',9999 );
+    }
+
+    return $fields;
+}

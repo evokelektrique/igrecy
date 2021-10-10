@@ -2,12 +2,31 @@
 <?php wp_footer(); ?>
 <script>
    const backDrop = document.querySelector('.backdrop-container');
+   const mobileNavbar = document.querySelector('.mobile-nav');
+   const navbarWrapper = document.querySelector('.mobile-nav-wrapper');
+   const sidebarFiltersBackDrop = document.querySelector('.blog-filter-container .backdrop-sidebar-filters');
+   const sidebarWrapper = document.querySelector('.blog-posts-container-wrapper .sidebar');
+   const sidebarFiltersToggle = document.querySelector('.sidebar-filters-toggle-wrapper');
+
+   if(sidebarWrapper || sidebarFiltersToggle) {
+      sidebarFiltersToggle.addEventListener('click', () => {
+         sidebarFiltersBackDrop.classList.toggle('backdrop-active')
+         sidebarWrapper.classList.toggle('sidebar-filters-wrapper-active')
+      })
+   }
+
+   if(sidebarFiltersBackDrop) {
+      sidebarFiltersBackDrop.addEventListener('click', () => {
+         sidebarFiltersBackDrop.classList.toggle('backdrop-active')
+         sidebarWrapper.classList.toggle('sidebar-filters-wrapper-active')
+      })
+   }
+
    backDrop.addEventListener('click', () => {
       backDrop.classList.toggle('backdrop-active')
       navbarWrapper.classList.toggle('mobile-nav-wrapper-active')
    })
-   const mobileNavbar = document.querySelector('.mobile-nav');
-   const navbarWrapper = document.querySelector('.mobile-nav-wrapper');
+
    mobileNavbar.addEventListener('click', () => {
       navbarWrapper.classList.toggle('mobile-nav-wrapper-active')
       backDrop.classList.toggle('backdrop-active')

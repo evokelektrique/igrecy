@@ -24,20 +24,89 @@ if ( ! comments_open() ) {
 }
 
 ?>
+<style>
+.video {
+   height: 400px;
+}
+
+.comment {
+   margin-bottom: 30px;
+}
+
+ /**
+  * Like and dislikes
+  */
+
+
+.cld-like-trigger i,
+.cld-dislike-trigger i {
+   display: none;
+}
+.cld-like-trigger {
+   padding: 0 11px;
+   background: url(<?= get_template_directory_uri() . '/dist' ?>/src/images/thumbs-up.svg);
+   width: 25px;
+   height: 25px;
+}
+.cld-like-count-wrap {
+   color: blue;
+}
+.cld-dislike-trigger {
+   padding: 0 11px;
+   background: url(<?= get_template_directory_uri() . '/dist' ?>/src/images/thumbs-down.svg);
+   width: 25px;
+   height: 25px;
+}
+.cld-dislike-count-wrap {
+   color: red;
+}
+.new-comment-container {
+   display: block;
+}
+.comment-form textarea {
+   background: #F9FAFB;
+   border: 1px solid #1890ff;
+   box-sizing: border-box;
+   border-radius: 12px;
+   margin-top: 32px;
+   margin-bottom: 32px;
+   padding: 15px;
+   width: 100%;
+}
+.comment-form button,
+#submit {
+   width: 116px;
+   height: 48px;
+   background: #1890FF;
+   box-shadow: 0px 8px 16px rgba(24, 144, 255, 0.32);
+   border-radius: 12px;
+   color: white;
+   border: none;
+   cursor: pointer;
+   outline: none;
+}
+
+p.stars {
+   margin: 1em 0;
+}
+p.stars a {
+   padding: 6px 12px;
+   color: black;
+   background: gainsboro;
+   border-radius: 5px;
+   margin-left: 5px;
+   display: inline-block;
+}
+p.stars a.active {
+   background: #1890ff;
+   color: white;
+   box-shadow: 0px 0px 7px 0px #1890ff;
+}
+
+</style>
+
 <div id="reviews" class="woocommerce-Reviews">
    <div id="comments">
-      <h2 class="woocommerce-Reviews-title">
-         <?php
-         $count = $product->get_review_count();
-         if ( $count && wc_review_ratings_enabled() ) {
-            /* translators: 1: reviews count 2: product name */
-            $reviews_title = sprintf( esc_html( _n( '%1$s review for %2$s', '%1$s reviews for %2$s', $count, 'woocommerce' ) ), esc_html( $count ), '<span>' . get_the_title() . '</span>' );
-            echo apply_filters( 'woocommerce_reviews_title', $reviews_title, $count, $product ); // WPCS: XSS ok.
-         } else {
-            esc_html_e( 'Reviews', 'woocommerce' );
-         }
-         ?>
-      </h2>
 
       <?php if ( have_comments() ) : ?>
          <ol class="commentlist">
@@ -75,7 +144,7 @@ if ( ! comments_open() ) {
                'title_reply'         => have_comments() ? esc_html__( 'Add a review', 'woocommerce' ) : sprintf( esc_html__( 'Be the first to review &ldquo;%s&rdquo;', 'woocommerce' ), get_the_title() ),
                /* translators: %s is product title */
                'title_reply_to'      => esc_html__( 'Leave a Reply to %s', 'woocommerce' ),
-               'title_reply_before'  => '<span id="reply-title" class="comment-reply-title">',
+               'title_reply_before'  => '<span id="reply-title" style="display:none" class="comment-reply-title">',
                'title_reply_after'   => '</span>',
                'comment_notes_after' => '',
                'label_submit'        => esc_html__( 'ثبت دیدگاه', 'woocommerce' ),
@@ -121,7 +190,7 @@ if ( ! comments_open() ) {
             }
 
             if ( wc_review_ratings_enabled() ) {
-               $comment_form['comment_field'] = '<div class="comment-form-rating"><label for="rating">' . esc_html__( 'Your rating', 'woocommerce' ) . ( wc_review_ratings_required() ? '&nbsp;<span class="required">*</span>' : '' ) . '</label><select name="rating" id="rating" required>
+               $comment_form['comment_field'] = '<div class="comment-form-rating"><label for="rating">' . esc_html__( 'امتیاز شما', 'woocommerce' ) . ( wc_review_ratings_required() ? '&nbsp;<span class="required">*</span>' : '' ) . '</label><select name="rating" id="rating" required>
                   <option value="">' . esc_html__( 'Rate&hellip;', 'woocommerce' ) . '</option>
                   <option value="5">' . esc_html__( 'Perfect', 'woocommerce' ) . '</option>
                   <option value="4">' . esc_html__( 'Good', 'woocommerce' ) . '</option>
@@ -131,7 +200,7 @@ if ( ! comments_open() ) {
                </select></div>';
             }
 
-            $comment_form['comment_field'] .= '<textarea id="comment" name="comment" cols="45" rows="8" required></textarea>';
+            $comment_form['comment_field'] .= '<textarea id="comment" name="comment" cols="45" rows="8" required placeholder="متن پیامتون رو اینجا بنویسید"></textarea>';
 
             comment_form( apply_filters( 'woocommerce_product_review_comment_form_args', $comment_form ) );
             ?>

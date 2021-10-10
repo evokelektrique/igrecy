@@ -8,10 +8,16 @@ body {
   flex-wrap: wrap;
 }
 .main {
-  max-width: 876px;
+  width: 876px;
 }
 .sidebar {
-  max-width: 280px;
+  width: 300px;
+}
+@media (max-width: 1024px) {
+   .main,
+   .sidebar {
+      min-width: 100%;
+   }
 }
 .product-title-header {
   margin-bottom: 24px;
@@ -257,6 +263,7 @@ body {
   width: 64px;
   height: 64px;
   margin-bottom: 24px;
+  border-radius: 50px;
 }
 .author-detail h5{
   font-weight: 700;

@@ -32,8 +32,10 @@
          </ul>
 
       </div>
+      <?php if(!is_user_logged_in()): ?>
       <div class="col">
          <a href="<?= home_url('/signin'); ?>" class="btn btn-secondary btn-small">ورود / ثبت نام</a>
       </div>
+      <?php endif; ?>
    </div>
 </header>

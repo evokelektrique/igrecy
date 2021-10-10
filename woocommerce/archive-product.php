@@ -25,6 +25,22 @@ get_header();
 .blog-posts-container-wrapper {
    display: flex;
 }
+@media (max-width: 1024px) {
+   .blog-posts-container-wrapper {
+      flex-direction: column;
+   }
+   .sidebar {
+      display: block !important;
+      position: fixed;
+      top: 0;
+      margin: 0 !important;
+      transition: all .4s ease-in-out;
+      height: 100%;
+      border-radius: 0 !important;
+      background: #fff;
+      right: -100%;
+   }
+}
 
 .sidebar {
    flex: 1;
@@ -72,7 +88,7 @@ get_header();
    flex-direction: row;
    justify-content: center;
    align-items: center;
-   padding: 4px 16px;
+   padding: 4px;
    background: #F4F6F8;
    border-radius: 16px;
    margin-top: 10px;
@@ -80,15 +96,29 @@ get_header();
 }
 .sidebar-filters a {
    color: #919EAB;
-   margin: 0 5px;
+   margin: 0 12px;
 }
 .sidebar-filters a.active {
-   padding: 5px;
+   padding: 10px;
    background: linear-gradient(180deg, #FFFFFF 0%, #F5F5F5 100%);
    box-shadow: 0px 8px 16px rgba(145, 158, 171, 0.48);
    border-radius: 12px;
    color: #1890FF;
 }
+
+.sidebar-filters-toggle-wrapper {
+   height: 40px;
+   padding: 10px;
+   display: none;
+}
+@media (max-width: 1024px) {
+   .sidebar-filters-toggle-wrapper {
+      display: block;
+   }
+}
+
+
+
 </style>
 
 <div class="blog-list-container container">
@@ -116,14 +146,30 @@ get_header();
 
       echo('<div class="blog-posts-container-wrapper">');
       ?>
+
       <!-- Sidebar -->
       <div class="sidebar">
 
          <div class="sidebar-categories">
+            <?php
+            $current_tag_url = add_query_arg( $wp->query_vars );
+
+            // Free
+            $free_tag_url = get_term_link(get_term_by('slug', 'free','product_tag'));
+            $is_free_tag_current_page = strpos($free_tag_url, $current_tag_url) !== false;
+
+            // Not Free
+            $not_free_tag_url = get_term_link(get_term_by('slug', 'not_free','product_tag'));
+            $is_not_free_tag_current_page = strpos($not_free_tag_url, $current_tag_url) !== false;
+
+            // All
+            $all_tag_url = get_permalink( wc_get_page_id( 'shop' ) );
+            $is_all_tag_current_page = is_shop();
+            ?>
             <div class="sidebar-filters">
-               <a href="#">غیر رایگان</a>
-               <a href="#">رایگان</a>
-               <a href="#" class="active">همه</a>
+               <a href="<?= $not_free_tag_url ?>" class="<?= $is_not_free_tag_current_page ? 'active' : '' ?>">غیر رایگان</a>
+               <a href="<?= $free_tag_url ?>" class="<?= $is_free_tag_current_page ? 'active' : '' ?>">رایگان</a>
+               <a href="<?= $all_tag_url ?>" class="<?= $is_all_tag_current_page ? 'active' : '' ?>">همه</a>
             </div>
             <h4>دسته بندی آموزش</h4>
             <?php

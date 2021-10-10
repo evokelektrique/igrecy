@@ -21,13 +21,13 @@ defined( 'ABSPATH' ) || exit;
 
 <style type="text/css">
 body {
-   background: #e8e8e8 !important;
+   background: #fafafa !important;
 }
 .product-container {
    display: block !important;
 }
 .main {
-   max-width: 100% !important;
+   width: 100% !important;
 }
 .dashboard-container {
    display: flex;
@@ -38,7 +38,6 @@ body {
    margin-bottom: 1em;
    background-color: #ffffff;
    border-radius: 3px;
-   box-shadow: 0 1px 2px 0 rgb(25 25 25 / 20%);
    margin-bottom: 30px;
    width: 100%;
    padding: 20px 40px;

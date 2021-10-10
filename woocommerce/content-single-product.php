@@ -70,7 +70,7 @@ $rating  = intval($product->get_average_rating());
       <div class="mobile-course-details course-details shadow-normal">
          <div class="rating">
             <div class="stars">
-               <?php for ($i=0; $i < 6; $i++) {
+               <?php for ($i=0; $i < 5; $i++) {
                   if($rating > $i) {
                      ?>
                      <img src="<?= get_template_directory_uri() . "/dist" ?>/src/images/star-filled.svg" alt="4" />
@@ -193,7 +193,7 @@ $rating  = intval($product->get_average_rating());
       <div class="course-details shadow-normal">
          <div class="rating">
             <div class="stars">
-               <?php for ($i=0; $i < 6; $i++) {
+               <?php for ($i=0; $i < 5; $i++) {
                   if($rating > $i) {
                      ?>
                      <img src="<?= get_template_directory_uri() . "/dist" ?>/src/images/star-filled.svg" alt="4" />

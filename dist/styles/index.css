@@ -6,6 +6,52 @@
 @import url('./product.css');
 @import url('./blog.css');
 
+/*Checkout*/
+#add_payment_method #payment, .woocommerce-cart #payment, .woocommerce-checkout #payment {
+   background: #f5f7fa !important;
+}
+.woocommerce #respond input#submit.alt, .woocommerce a.button.alt, .woocommerce button.button.alt, .woocommerce input.button.alt,
+.woocommerce #respond input#submit, .woocommerce a.button, .woocommerce button.button, .woocommerce input.button {
+   background-color: #1890FF !important;
+   color: white !important;
+   box-shadow: 0px 8px 16px rgba(24, 144, 255, 0.32) !important;
+   outline: none !important;
+   border: none !important;
+   border-radius: 12px !important;
+   cursor: pointer !important;
+   font-weight: normal !important;
+   padding: 15px !important;
+}
+
+.woocommerce-order .woocommerce-customer-details {
+   display: none;
+}
+
+.woocommerce table.my_account_orders .button {
+
+}
+
+.cld-like-dislike-wrap {
+   position: absolute;
+   left: -130px;
+}
+.main-comment-section {
+   position: relative;
+}
+
+.swiper-container {
+   overflow-x: hidden;
+}
+
+@media (max-width: 1024px) {
+   .cld-like-dislike-wrap {
+      top: 10px;
+   }
+   .nav .wrapper {
+      flex-direction: row !important;
+   }
+}
+
 html,body {
    overflow-x: hidden;
 }
